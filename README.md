@@ -15,7 +15,7 @@ A collection of rational and rational-adjacent stories
 
 ### Crime and mystery
 
-## Ressources
+# Ressources
 https://www.reddit.com/r/rational/
 A subreddit dedicated to the discussion of rational works
 
