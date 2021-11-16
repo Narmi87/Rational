@@ -1,13 +1,6 @@
 # Rational repository
 A collection of rational and rational-adjacent stories
 
-- [Rational repository](#rational-repository)
-  * [Web serials](#web-serials)
-  * [Ressources](#ressources)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 ## Web serials
 
 ### Fantasy
