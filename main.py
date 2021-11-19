@@ -1,32 +1,49 @@
 from bs4 import BeautifulSoup
 import requests
-from csv import writer
+import csv
 
-url = 'https://www.royalroad.com/fiction/47997/overkill'
-page = requests.get(url)
+RR_list = open("stories_links").read().splitlines()
+print(len(RR_list))
 
-soup = BeautifulSoup(page.content, 'html.parser')
-lists = soup.find_all('div', class_="row fic-header")
-details = soup.find_all('div', class_="fiction-info")
+RR_list = list(dict.fromkeys(RR_list))
+print(len(RR_list))
 
-with open('webserial.csv', 'w', encoding='utf8', newline='') as f:
-    thewriter = writer(f)
-    header = ['Title', 'Author', 'Status', 'Tags']
-    thewriter.writerow(header)
 
-    for list_ in lists:
-        title = list_.find('h1', property="name").text.replace('\n', '')
-        author = list_.find('span', property="name").text.replace('\n', '')
-        print(title, author)
-    for detail in details:
-        status = detail.find_all('span', class_="label label-default label-sm bg-blue-hoki")
-        print(status)
-        for stat in status:
-            print(stat.text)
-        tags = detail.find_all('a', property="genre")
-        print(tags)
-        for tag in tags:
-            print(tag.text)
+with open('serial.csv', 'w', encoding='utf8', newline='\n') as f:
+    writer = csv.writer(f)
+    header = ['Title', 'Author', 'Type', 'Status', 'Tags']
+    writer.writerow(header)
 
-        info = [title, author, status, tags]
-        thewriter.writerow(info)
+
+def get_info(url):
+    for x in url:
+        print(x)
+        page = requests.get(x)
+
+        soup = BeautifulSoup(page.content, 'html.parser')
+        lists = soup.find_all('div', class_="row fic-header")
+        status = soup.find_all('div', class_="fiction-info")
+        tags = soup.find_all('span', class_="tags")
+
+        # print(status)
+        # print(tags.text)
+
+        with open('serial.csv', 'a', encoding='utf8', newline='\n') as file:
+            writer2 = csv.writer(file)
+
+            for list_ in lists:
+                title = list_.find('h1', property="name").text
+                author = list_.find('span', property="name").text.replace('\n', '')
+                print(title, author)
+            for stat in status:
+                type_ = stat.find_all('span', class_="bg-blue-hoki")[0].text
+                current_status = stat.find_all('span', class_="bg-blue-hoki")[1].text.strip()
+                print(type_, current_status)
+            for tag in tags:
+                item = ", ".join([tag.text for tag in tag.find_all("a")])
+                print(item)
+
+            writer2.writerow([title, author, type_, current_status, item])
+
+
+get_info(RR_list)
